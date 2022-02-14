@@ -12,10 +12,14 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
-
+from decouple import config
+import os
+import django_on_heroku
+import testcaseLiis.password_validation
+# django_on_heroku.settings(locals())
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-import testcaseLiis.password_validation
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,11 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
-
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG")
+DEBUG = 'TRUE'
 
 ALLOWED_HOSTS = []
 
@@ -58,10 +61,10 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'testcaseLiis.urls'
 
 TEMPLATES = [
+
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,11 +85,11 @@ WSGI_APPLICATION = 'testcaseLiis.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'testliis',
-        'USER': 'ilia',
-        'PASSWORD': 'hard',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': config('DJANGO_DATABASE_NAME'),
+        'USER': config('DJANGO_DATABASE_USER'),
+        'PASSWORD': config('DJANGO_DATABASE_PASSWORD'),
+        'HOST': config('DJANGO_DATABASE_ADDRESS'),
+        'PORT': config('DJANGO_DATABASE_PORT'),
 
     }
 }
@@ -116,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -133,3 +136,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.DjangoModelPermissions'
+    ]
+}
