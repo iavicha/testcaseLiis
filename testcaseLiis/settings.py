@@ -12,13 +12,14 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
-from decouple import config
-import os
 import django_on_heroku
 import testcaseLiis.password_validation
-# django_on_heroku.settings(locals())
+django_on_heroku.settings(locals())
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import dj_database_url
+
+#
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,12 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
+# SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'TRUE'
+# DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -82,16 +83,9 @@ WSGI_APPLICATION = 'testcaseLiis.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DJANGO_DATABASE_NAME'),
-        'USER': config('DJANGO_DATABASE_USER'),
-        'PASSWORD': config('DJANGO_DATABASE_PASSWORD'),
-        'HOST': config('DJANGO_DATABASE_ADDRESS'),
-        'PORT': config('DJANGO_DATABASE_PORT'),
 
-    }
+DATABASES = {
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
 }
 
 # Password validation
@@ -147,3 +141,16 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissions'
     ]
 }
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)

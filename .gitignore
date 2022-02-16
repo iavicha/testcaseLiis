@@ -1,7 +1,6 @@
 /tutorial-env/
 /db.sqlite3
 /venv/
-.env
 .my_pgpass
 .pg_service.conf
 /Users/
