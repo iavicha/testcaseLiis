@@ -16,9 +16,6 @@ import django_on_heroku
 import testcaseLiis.password_validation
 import dj_database_url
 
-
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 #
@@ -146,5 +143,21 @@ REST_FRAMEWORK = {
 }
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+        },
+    },
+}
 
 django_on_heroku.settings(locals())
