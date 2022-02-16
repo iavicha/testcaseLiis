@@ -1,1 +1,1 @@
-web: gunicorn yourapp-name.wsgi
+web: gunicorn testcaseLiis.wsgi
