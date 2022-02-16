@@ -4,5 +4,3 @@
 .my_pgpass
 .pg_service.conf
 /Users/
-/leader/migrations/
-/leader_api/migrations/
