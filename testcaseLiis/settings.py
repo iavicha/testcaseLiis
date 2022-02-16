@@ -14,10 +14,12 @@ from pathlib import Path
 import os
 import django_on_heroku
 import testcaseLiis.password_validation
-django_on_heroku.settings(locals())
+import dj_database_url
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-import dj_database_url
 
 #
 
@@ -85,7 +87,8 @@ WSGI_APPLICATION = 'testcaseLiis.wsgi.application'
 
 
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    'default': dj_database_url.config(conn_max_age=600,
+                                      ssl_require=True)
 }
 
 # Password validation
@@ -141,3 +144,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissions'
     ]
 }
+
+
+
+django_on_heroku.settings(locals())
