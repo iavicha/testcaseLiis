@@ -145,6 +145,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 django_on_heroku.settings(locals())
