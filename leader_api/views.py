@@ -20,6 +20,13 @@ class AuthorOrReadOnly(permissions.BasePermission):
         return False
 
 
+class UserReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if obj.username == request.user:
+            return True
+        return False
+
+
 class LeaderSubscriptionViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = Leader.objects.all()
@@ -39,7 +46,7 @@ class LeaderPublicViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.AllowAny, AuthorOrReadOnly]
+    permission_classes = [permissions.AllowAny, UserReadOnly]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
