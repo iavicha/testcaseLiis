@@ -6,6 +6,7 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 
 class AuthorOrReadOnly(permissions.BasePermission):
@@ -38,8 +39,8 @@ class LeaderPublicViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = LeaderSerializerPublic
 
 
+@api_view(['GET', 'POST'])
 class UserViewSet(viewsets.ModelViewSet):
-    http_method_names = ["GET", "PUT", "HEAD"]
     permission_classes = [permissions.AllowAny, AuthorOrReadOnly]
     queryset = User.objects.all()
     serializer_class = UserSerializer
