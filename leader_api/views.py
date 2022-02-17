@@ -39,7 +39,8 @@ class LeaderPublicViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.AllowAny]
+    http_method_names = ['PUT']
+    permission_classes = [permissions.AllowAny, AuthorOrReadOnly]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
